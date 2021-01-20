@@ -64,16 +64,16 @@ The reliability of these scripts relies heavily on a metadata file, which you wi
 The metadata file can have any information you require in it, e.g. sampling location, sex, sample ID etc etc. In fact, it's good habit to have a metadata file such as this associated with any sequencing project. Below I provide an example of a metadata file structure. It's a tsv file, with columns and rows. Can easily be made in Excel and saved as a .tsv ;)
 
 ```
-simple_ID 	sample_ID 	instrument 	flow_cell	lane 	barcode	sex	run_num
-APLP_F1		APLP_F1_A_L001	  ILLUMINA 	A		1	ATGCA	F	44 
-APLP_F1		APLP_F1_A_L002	  ILLUMINA 	A		2	ATGCA	F	44 
-APLP_F1		APLP_F1_A_L003	  ILLUMINA 	A		3	ATGCA	F	41 
-APLP_F2		APLP_F2_A_L001	  ILLUMINA 	A		1	GTCTA	F	44 
-APLP_F2		APLP_F2_A_L002	  ILLUMINA 	A		2	GTCTA	F	44 
-APLP_F2		APLP_F2_A_L003	  ILLUMINA 	A		3	CTAGA	F	41 
-APLP_M1		APLP_M1_A_L001	  ILLUMINA 	A		1	CAAGC	M	44 
-APLP_M1		APLP_M1_B_L001	  ILLUMINA 	B		1	CAAGC	M	44 
-APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	41 
+simple_ID 	sample_ID 	instrument 	flow_cell	lane 	barcode	sex	run_num seq_num
+APLP_F1		APLP_F1_A_L001	  ILLUMINA 	A		1	ATGCA	F	44  1
+APLP_F1		APLP_F1_A_L002	  ILLUMINA 	A		2	ATGCA	F	44  1
+APLP_F1		APLP_F1_A_L003	  ILLUMINA 	A		3	ATGCA	F	41  1
+APLP_F2		APLP_F2_A_L001	  ILLUMINA 	A		1	GTCTA	F	44  1
+APLP_F2		APLP_F2_A_L002	  ILLUMINA 	A		2	GTCTA	F	44  1
+APLP_F2		APLP_F2_A_L003	  ILLUMINA 	A		3	CTAGA	F	41  1
+APLP_M1		APLP_M1_A_L001	  ILLUMINA 	A		1	CAAGC	M	44  1
+APLP_M1		APLP_M1_B_L001	  ILLUMINA 	B		1	CAAGC	M	44  1
+APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	41  1
 ```
 
 #### Info on this metadata
@@ -97,7 +97,7 @@ Much of these metdata can be collected from your fastq read headers:
 #### Depending on how you edit and put together your metadata, you will have to check each script to make sure it pulls out the correct column of data.
 For example, 
 
-In 1_qc_clean.sh, we take the second column which is the name of the fastq reads
+In `1_qc_clean.sh`, we take the second column which is the name of the fastq reads
 
 ```
 read1=( `cat $metadata | cut -f 2` )
@@ -113,7 +113,7 @@ and we append \_R1.fastq and \_R2.fastq to the end of the file name in the scrip
 trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
 ```
 
-In 3_add_readgroups.sh we also use a lot of this information:
+In `3_add_readgroups.sh` we also use a lot of this information:
 
 RGSM (sample name) = simple_ID
 RGLB (DNA preparation library identifier) = simple_ID.barcode (or index identifed elsewhere)
