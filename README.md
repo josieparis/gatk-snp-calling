@@ -35,11 +35,11 @@ Aligns clean reads to a reference genome to form sam, converts to bam, sort, ind
 Adds readgroup information from a metadata file, where columns specify which read group info should be added
 
 ## 4_dedup.sh
-### NB Technically this first run of marking duplicates is not necessary because we will run it again per-sample, and that per-sample marking would be enough to achieve the desired result.  We only do this round of marking duplicates for QC purposes                                                              
+##### NB Technically this first run of marking duplicates is not necessary because we will run it again per-sample, and that per-sample marking would be enough to achieve the desired result.  We only do this round of marking duplicates for QC purposes                                                              
 Marks duplicates in the bam files
 
 ## 5_merge_sample_bams.sh
-##### NB This merging only needs to happen if you have multiple fastq files for one sample, i.e. one individual sample which has been run across multiple lanes, e.g. sample_1A.fastq sample_1B.fastq. If you have one set of reads per sample you can skip this script (and the next one too)                                           
+##### NB This merging only needs to happen if you have multiple fastq files for one sample, i.e. one individual sample which has been run across multiple lanes, e.g. sample_1A.fastq sample_1B.fastq. If you have one set of reads per sample you can skip this script (and the next one too)                                    
 Merges bams from multiple lanes of sequencing
 
 ## 6_dedup.sh                                         
@@ -58,3 +58,6 @@ Runs GATK4 GenomicsDBImport and GenotypeGVCFs
 
 ## 10_refine_filter.sh
 Uses GATK4 SelectVariants, vcftools for various filters (user can choose!) and finally GATK3 CombineVariants to merge samples generated from multiple populations
+
+
+
