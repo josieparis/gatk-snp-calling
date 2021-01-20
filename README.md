@@ -59,5 +59,30 @@ Runs GATK4 GenomicsDBImport and GenotypeGVCFs
 ## 10_refine_filter.sh
 Uses GATK4 SelectVariants, vcftools for various filters (user can choose!) and finally GATK3 CombineVariants to merge samples generated from multiple populations
 
+### Important Metadata 
+The reliability of these scripts relies heavily on a metadata file, which you will have to create prior to running the pipeline.
+The metadata file can have any information you require in it, e.g. sampling location, sex, sample ID etc etc. In fact, it's good habit to have a metadata file such as this associated with any sequencing project. Below I provide an example of a metadata file structure. It's a tsv file, with columns and rows. Can easily be made in Excel and saved as a .tsv ;)
+
+```
+simple_ID 	sample_ID 		  instrument 	flow_cell	lane 	barcode	sex	seq_num	run_num
+APLP_F1		  APLP_F1_A_L001	ILLUMINA 	    A			  1		  ATGCA	   F	1 		44 
+APLP_F1		  APLP_F1_A_L002	ILLUMINA 	    A			  2		  ATGCA	   F	1 		44 
+APLP_F1		  APLP_F1_A_L003	ILLUMINA 	    A			  3		  ATGCA    F	1 		41 
+APLP_F2		  APLP_F2_A_L001	ILLUMINA 	    A			  1		  GTCTA	   F	1 		44 
+APLP_F2		  APLP_F2_A_L002	ILLUMINA 	    A			  2		  GTCTA	   F	1 		44 
+APLP_F2		  APLP_F2_A_L003	ILLUMINA 	    A			  3		  CTAGA	   F	1 		41 
+APLP_M1		  APLP_M1_A_L001	ILLUMINA 	    A			  1		  CAAGC	   M	1 		44 
+APLP_M1		  APLP_M1_B_L001	ILLUMINA 	    B			  1		  CAAGC	   M	1 		44 
+APLP_M1		  APLP_M1_C_L001	ILLUMINA 	    C			  1		  CAAGC	   M	1 		41 
+```
+
+
+
+
+
+
+
+##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
+
 
 
