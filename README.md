@@ -12,3 +12,10 @@ Fraser BA, Whiting JR, Paris JR, Weadick CJ, Parsons PJ, Charlesworth D, Bergero
 Whiting JR, Paris JR, van der Zee MJ, Parsons, PJ, Weigel D, Fraser BA. Drainage-structuring of ancestral variation and a common functional pathway shape limited genomic convergence in natural high- and low-predation guppies. bioRxiv: https://doi.org/10.1101/2020.10.14.339333
 
 And more to follow! 
+
+
+#### For these scripts to work, you need to set up a neat waterfall workspace
+
+
+
+SNP_calling
