@@ -21,8 +21,6 @@ And more to follow!
 
 `mkdir SNP_calling && cd SNP_calling && mkdir scripts reads bams gvcfs vcfs && cd scripts && mkdir logs && cd .. && cd reads && mkdir raw_reads clean_reads && cd raw_reads && mkdir fastqc && cd ../clean_reads && mkdir fastqc && cd ../../ && cd bams && mkdir raw_bams interim_bams clean_bams && cd ../`
 
-### Once the directory structure is set up, we can get started.
-
 #### Here's a list of the scripts and a brief description of what they do:
 
 ## 1_qc_clean.sh
@@ -113,13 +111,28 @@ and we append \_R1.fastq and \_R2.fastq to the end of the file name in the scrip
 trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
 ```
 
-In `3_add_readgroups.sh` we also use a lot of this information:
+In `3_add_readgroups.sh` we also use a lot of this information too ...
 
-RGSM (sample name) = simple_ID
-RGLB (DNA preparation library identifier) = simple_ID.barcode (or index identifed elsewhere)
-#### NB This is important to identify PCR duplicates in MarkDuplicates step. You can ignore this readgroup for PCR-free libraries
-RGID = flow_cell.lane
-RGPU = Platform Unit = {FLOWCELL_BARCODE}.{LANE}.{library-specific identifier}. This is the most specific definition for a group of reads.
+### Read Groups
+
+#### RGSM
+(sample name) = simple_ID
+#### RGLB
+(DNA preparation library identifier) = simple_ID.seq_num (or index identifed from your library prep)
+##### NB This is important to identify PCR duplicates in MarkDuplicates step. You can ignore this readgroup for PCR-free libraries
+#### RGID
+(Read group identifier) = flow_cell.lane
+#### RGPU
+(Platform Unit) = flow_cell.lane.barcode
+#### RGPL
+(Platform) = instrument
+##### NB takes one of ILLUMINA, SOLID, LS454, HELICOS and PACBIO - must be in caps!
+
+You can get a lot of this read group information from your fastq files.
+
+@(instrument id):(run_num):(flow_cell):(lane):(tile):(x_pos):(y_pos) (read):(filtered):(control_num):(index sequence)
+
+
 
 ##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
 
