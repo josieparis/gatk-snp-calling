@@ -113,12 +113,12 @@ and we append \_R1.fastq and \_R2.fastq to the end of the file name in the scrip
 trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
 ```
 
-In 3_add_readgroups.sh we need to be particularly careful
-RGSM = biological sample name.
-#### Using our example above, this will be column 1
-RGLB = simple_ID.index.barcode (or index identifed elsewhere)
+In 3_add_readgroups.sh we also use a lot of this information:
+
+RGSM (sample name) = simple_ID
+RGLB (DNA preparation library identifier) = simple_ID.barcode (or index identifed elsewhere)
 #### NB This is important to identify PCR duplicates in MarkDuplicates step. You can ignore this readgroup for PCR-free libraries
-RGID = Read group identifier = flow_cell.lane
+RGID = flow_cell.lane
 RGPU = Platform Unit = {FLOWCELL_BARCODE}.{LANE}.{library-specific identifier}. This is the most specific definition for a group of reads.
 
 ##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
