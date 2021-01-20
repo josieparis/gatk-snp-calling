@@ -16,6 +16,4 @@ And more to follow!
 
 #### For these scripts to work, you need to set up a neat waterfall workspace
 
-![alt text](https://github.com/josieparis/gatk-snp-calling/directory_structure.001.jpegraw=true)
-
 
