@@ -64,23 +64,62 @@ The reliability of these scripts relies heavily on a metadata file, which you wi
 The metadata file can have any information you require in it, e.g. sampling location, sex, sample ID etc etc. In fact, it's good habit to have a metadata file such as this associated with any sequencing project. Below I provide an example of a metadata file structure. It's a tsv file, with columns and rows. Can easily be made in Excel and saved as a .tsv ;)
 
 ```
-simple_ID 	sample_ID 	instrument 	flow_cell	lane 	barcode	sex	seq_num	run_num
-APLP_F1		APLP_F1_A_L001	  ILLUMINA 	A		1	ATGCA	F	1 	44 
-APLP_F1		APLP_F1_A_L002	  ILLUMINA 	A		2	ATGCA	F	1 	44 
-APLP_F1		APLP_F1_A_L003	  ILLUMINA 	A		3	ATGCA	F	1 	41 
-APLP_F2		APLP_F2_A_L001	  ILLUMINA 	A		1	GTCTA	F	1 	44 
-APLP_F2		APLP_F2_A_L002	  ILLUMINA 	A		2	GTCTA	F	1 	44 
-APLP_F2		APLP_F2_A_L003	  ILLUMINA 	A		3	CTAGA	F	1 	41 
-APLP_M1		APLP_M1_A_L001	  ILLUMINA 	A		1	CAAGC	M	1 	44 
-APLP_M1		APLP_M1_B_L001	  ILLUMINA 	B		1	CAAGC	M	1 	44 
-APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	1 	41 
+simple_ID 	sample_ID 	instrument 	flow_cell	lane 	barcode	sex	run_num
+APLP_F1		APLP_F1_A_L001	  ILLUMINA 	A		1	ATGCA	F	44 
+APLP_F1		APLP_F1_A_L002	  ILLUMINA 	A		2	ATGCA	F	44 
+APLP_F1		APLP_F1_A_L003	  ILLUMINA 	A		3	ATGCA	F	41 
+APLP_F2		APLP_F2_A_L001	  ILLUMINA 	A		1	GTCTA	F	44 
+APLP_F2		APLP_F2_A_L002	  ILLUMINA 	A		2	GTCTA	F	44 
+APLP_F2		APLP_F2_A_L003	  ILLUMINA 	A		3	CTAGA	F	41 
+APLP_M1		APLP_M1_A_L001	  ILLUMINA 	A		1	CAAGC	M	44 
+APLP_M1		APLP_M1_B_L001	  ILLUMINA 	B		1	CAAGC	M	44 
+APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	41 
 ```
 
+#### Info on this metadata
+simple_ID = name of individual
+sample_ID = name of read pertaining to that individual
+instrument = One of ILLUMINA, SOLID, LS454, HELICOS and PACBIO (must be in caps!)
+flow_cell = flowcell ID that the sample was run on
+lane = lane the sample was run on
+run_num = run number of the fastq reads
 
+In this example metadata, we have several fastq files for each sample
+For example, sample `APLP_F1` is comprised of three sets of fastq reads: `APLP_F1_A_L001`, `APLP_F1_A_L002`, `APLP_F1_A_L003` and we can see in the metadata that they come from three different lanes of sequencing (1,2,3) on flow_cell A. 
+On the other hand, `APLP_F2` are also derived from the same flow_cell (A), across three lanes (1,2,3), but one of the samples has a different barcode
+Finally, `APLP_M1` is sequenced on lane 1, but across three different flow cells (A, B, C). 
+This example is just for illustrative purposes so you can see the differences between the metdata columns. 
 
+#### Where do I get the metadata?
+Much of these metdata can be collected from your fastq read headers:
+@(instrument id):(run number):(flowcell ID):(lane):(tile):(x_pos):(y_pos) (read):(is filtered):(control number):(index sequence)FLOWCELL_BARCODE = @(instrument id):(run number):(flowcell ID)
 
+#### Depending on how you edit and put together your metadata, you will have to check each script to make sure it pulls out the correct column of data.
+For example, 
 
+In 1_qc_clean.sh, we take the second column which is the name of the fastq reads
 
+```
+read1=( `cat $metadata | cut -f 2` )
+read1_array=$raw_reads/${read1[(($MOAB_JOBARRAYINDEX))]}
+
+read2=( `cat $metadata | cut -f 2` )
+read2_array=$raw_reads/${read2[(($MOAB_JOBARRAYINDEX))]}
+```
+
+and we append \_R1.fastq and \_R2.fastq to the end of the file name in the script:
+
+```
+trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
+```
+
+In 3_add_readgroups.sh we need to be particularly careful
+RGSM = biological sample name.
+#### Using our example above, this will be column 1
+RGLB = simple_ID.index.barcode (or index identifed elsewhere)
+#### NB This is important to identify PCR duplicates in MarkDuplicates step. You can ignore this readgroup for PCR-free libraries
+RGID = Read group identifier = flow_cell.lane
+RGPU = Platform Unit = {FLOWCELL_BARCODE}.{LANE}.{library-specific identifier}. This is the most specific definition for a group of reads.
 
 ##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
 
