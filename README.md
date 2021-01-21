@@ -3,8 +3,10 @@ Full GATK SNP calling pipeline
 
 This set of scripts take raw illumina whole-genome sequencing reads as input to produce a filtered VCF file
 
-These scripts were written for a PBS batch cluster system.
-We provide a short bash script to convert PBS headers to SLURM (`liftover_PBS2SLURM.sh`)
+These scripts were written for a PBS batch cluster system
+
+We provide a short bash script to convert PBS headers to SLURM (`liftover_PBS2SLURM.sh`) (but please check these before starting)
+
 Conversion to SGE should be relatively straightforward (we will add another liftover script for this in the future ...)
 
 #### These scripts have been used to create VCF files in the following publications:
@@ -39,14 +41,15 @@ Adds readgroup information from a metadata file, where columns specify which rea
 Marks duplicates in the bam files
 
 ## 5_merge_sample_bams.sh
-##### NB This merging only needs to happen if you have multiple fastq files for one sample, i.e. one individual sample which has been run across multiple lanes, e.g. sample_1A.fastq sample_1B.fastq. If you have one set of reads per sample you can skip this script (and the next one too)                                    
 Merges bams from multiple lanes of sequencing
+##### NB This merging only needs to happen if you have multiple fastq files for one sample, i.e. one individual sample which has been run across multiple lanes, e.g. sample_1A.fastq sample_1B.fastq. If you have one set of reads per sample you can skip this script (and the next one too)   
 
 ## 6_dedup.sh                                         
 Marks duplicates in bams from multiple lanes of sequencing
 
 ## 7_recal.sh   
 Recalibrates the bam files against a "truth-set" of SNPs
+
 ##### Truth-set vcfs are variants for which we have high confidence, and tend to be generated from PCR-free high coverage libraries. If you don't have one of these available, skip this step. In such cases I reccommend calling variants with GATK, and then also calling variants with another program (e.g. Freebayes). When the VCFs of each caller are complete you can intersect them using `bedtools intersect` and keep the SNPs which were called by both programs. IF variants have been called in both programs, this offers you some confidence.
 
 ## 8_haplotype_caller.sh
