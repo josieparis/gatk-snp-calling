@@ -3,9 +3,11 @@ Full GATK SNP calling pipeline
 
 This set of scripts take raw illumina whole-genome sequencing reads as input to produce a filtered VCF file
 
-These scripts were written for a PBS batch cluster system and have since been rewritten for a SLURM batch system. I also have older ones available for SGE, which I can send by request (they may need some updating)
+These scripts were written for a PBS batch cluster system.
+We provide a short bash script to convert PBS headers to SLURM (`liftover_PBS2SLURM.sh`)
+Conversion to SGE should be relatively straightforward (we will add another liftover script for this in the future ...)
 
-#### These scripts have so far been used to create VCF files in the following publications:
+#### These scripts have been used to create VCF files in the following publications:
 
 Fraser BA, Whiting JR, Paris JR, Weadick CJ, Parsons PJ, Charlesworth D, Bergero R, Bemm F, Hoffmann M, Kottler VA, Liu C, Dreyer C, Weigel D (2020). Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata). Genome Biology and Evolution, evaa187. https://doi.org/10.1093/gbe/evaa187
 
@@ -16,6 +18,8 @@ Whiting JR, Paris JR, van der Zee MJ, Parsons, PJ, Weigel D, Fraser BA. Drainage
 
 ![directory_structure](https://user-images.githubusercontent.com/38511308/105203421-ff09df80-5b3a-11eb-92b5-33389dbc7a1f.jpeg)
 
+
+This directory structure is provided for you on the git clone, or else you can make it quickly yourself:
 
 `mkdir SNP_calling && cd SNP_calling && mkdir scripts reads bams gvcfs vcfs && cd scripts && mkdir logs && cd .. && cd reads && mkdir raw_reads clean_reads && cd raw_reads && mkdir fastqc && cd ../clean_reads && mkdir fastqc && cd ../../ && cd bams && mkdir raw_bams interim_bams clean_bams && cd ../`
 
@@ -54,6 +58,9 @@ Runs GATK4 GenomicsDBImport and GenotypeGVCFs
 
 ## 10_refine_filter.sh
 Uses GATK4 SelectVariants, vcftools for various filters (user can choose!) and finally GATK3 CombineVariants to merge samples generated from multiple populations
+
+### To run the scripts:
+- Check which batch submission system your cluster is running, i.e. SGE, PBS, SLURM
 
 ### Important Metadata 
 The reliability of these scripts relies heavily on a metadata file, which you will have to create prior to running the pipeline.
@@ -137,8 +144,11 @@ You can get a lot of this read group information from your fastq files.
 
 @(instrument id):(run_num):(flow_cell):(lane):(tile):(x_pos):(y_pos) (read):(filtered):(control_num):(index sequence)
 
-### NB This should be used as a guide only. Read group assignment changes depending on your library preparation set-up and type of sequencing data
+#### NB This should be used as a guide only. Read group assignment changes depending on your library preparation set-up and type of sequencing data
 
+
+## At the end of the process, we highly reccommend running MultiQC on your directories to collect data on quality control:
+https://multiqc.info/ 
 
 ##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
 
