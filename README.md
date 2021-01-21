@@ -5,13 +5,11 @@ This set of scripts take raw illumina whole-genome sequencing reads as input to 
 
 These scripts were written for a PBS batch cluster system and have since been rewritten for a SLURM batch system. I also have older ones available for SGE, which I can send by request (they may need some updating)
 
-#### These scripts have been used to create VCF files in the following publications:
+#### These scripts have so far been used to create VCF files in the following publications:
 
 Fraser BA, Whiting JR, Paris JR, Weadick CJ, Parsons PJ, Charlesworth D, Bergero R, Bemm F, Hoffmann M, Kottler VA, Liu C, Dreyer C, Weigel D (2020). Improved reference genome uncovers novel sex-linked regions in the guppy (Poecilia reticulata). Genome Biology and Evolution, evaa187. https://doi.org/10.1093/gbe/evaa187
 
 Whiting JR, Paris JR, van der Zee MJ, Parsons, PJ, Weigel D, Fraser BA. Drainage-structuring of ancestral variation and a common functional pathway shape limited genomic convergence in natural high- and low-predation guppies. bioRxiv: https://doi.org/10.1101/2020.10.14.339333
-
-And more to follow! 
 
 
 ### For these scripts to work, you need to set up a neat waterfall workspace
@@ -76,11 +74,18 @@ APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	41  1
 
 #### Info on this metadata
 simple_ID = name of individual
+
 sample_ID = name of read pertaining to that individual
+
 instrument = One of ILLUMINA, SOLID, LS454, HELICOS and PACBIO (must be in caps!)
+
 flow_cell = flowcell ID that the sample was run on
+
 lane = lane the sample was run on
+
 run_num = run number of the fastq reads
+
+seq_num = library prep number. Sometimes you have an index for this. We only did one library per sample, hence all are 1. 
 
 In this example metadata, we have several fastq files for each sample
 For example, sample `APLP_F1` is comprised of three sets of fastq reads: `APLP_F1_A_L001`, `APLP_F1_A_L002`, `APLP_F1_A_L003` and we can see in the metadata that they come from three different lanes of sequencing (1,2,3) on flow_cell A. 
@@ -132,6 +137,7 @@ You can get a lot of this read group information from your fastq files.
 
 @(instrument id):(run_num):(flow_cell):(lane):(tile):(x_pos):(y_pos) (read):(filtered):(control_num):(index sequence)
 
+### NB This should be used as a guide only. Read group assignment changes depending on your library preparation set-up and type of sequencing data
 
 
 ##### With thanks to Bonnie Fraser, Mijke van der Zee and Jim Whiting
