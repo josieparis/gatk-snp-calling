@@ -41,7 +41,7 @@ Adds readgroup information from a metadata file, where columns specify which rea
 Marks duplicates in the bam files
 
 ## 5_merge_sample_bams.sh
-Merges bams from multiple lanes of sequencing
+Merges bams from data generated from one sample which is in multiple fastq files
 ##### NB This merging only needs to happen if you have multiple fastq files for one sample, i.e. one individual sample which has been run across multiple lanes, e.g. sample_1A.fastq sample_1B.fastq. If you have one set of reads per sample you can skip this script (and the next one too)   
 
 ## 6_dedup.sh                                         
