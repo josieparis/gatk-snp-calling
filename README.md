@@ -111,14 +111,14 @@ Much of these metdata can be collected from your fastq read headers:
 #### Depending on how you edit and put together your metadata, you will have to check each script to make sure it pulls out the correct column of data.
 For example, 
 
-In `1_qc_clean.sh`, we take the second column which is the name of the fastq reads
+In `1_qc_clean.sh`, we take the third and fourth columns which is the name of the fastq reads
 
 ```
-read1=( `cat $metadata | cut -f 2` )
-read1_array=$raw_reads/${read1[(($MOAB_JOBARRAYINDEX))]}
+read1_array=( `cat $metadata | cut -f 2` )
+read1=$raw_reads/${read1_array[(($SLURM_ARRAY_TASK_ID))]}
 
-read2=( `cat $metadata | cut -f 2` )
-read2_array=$raw_reads/${read2[(($MOAB_JOBARRAYINDEX))]}
+read2_array=( `cat $metadata | cut -f 2` )
+read2=$raw_reads/${read2_array[(($SLURM_ARRAY_TASK_ID))]}
 ```
 
 and we append \_R1.fastq and \_R2.fastq to the end of the file name in the script:
