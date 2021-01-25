@@ -18,7 +18,7 @@ Whiting JR, Paris JR, van der Zee MJ, Parsons, PJ, Weigel D, Fraser BA. Drainage
 
 ### For these scripts to work, you need to set up a neat waterfall workspace
 
-![directory_structure](https://user-images.githubusercontent.com/38511308/105203421-ff09df80-5b3a-11eb-92b5-33389dbc7a1f.jpeg)
+![directory_structure 001](https://user-images.githubusercontent.com/38511308/105726962-7f0cbc80-5f22-11eb-85b3-f7854e1c27b9.jpeg)
 
 
 This directory structure is provided for you on the git clone, or else you can make it quickly yourself:
