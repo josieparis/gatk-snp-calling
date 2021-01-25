@@ -121,10 +121,8 @@ read2_array=( `cat $metadata | cut -f 2` )
 read2=$raw_reads/${read2_array[(($SLURM_ARRAY_TASK_ID))]}
 ```
 
-and we append \_R1.fastq and \_R2.fastq to the end of the file name in the script:
-
 ```
-trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
+trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1} ${read2}
 ```
 
 In `3_add_readgroups.sh` we also use a lot of this information too ...
