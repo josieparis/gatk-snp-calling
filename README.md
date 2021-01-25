@@ -18,12 +18,12 @@ Whiting JR, Paris JR, van der Zee MJ, Parsons, PJ, Weigel D, Fraser BA. Drainage
 
 ### For these scripts to work, you need to set up a neat waterfall workspace
 
-![directory_structure](https://user-images.githubusercontent.com/38511308/105203421-ff09df80-5b3a-11eb-92b5-33389dbc7a1f.jpeg)
+![directory_structure 001](https://user-images.githubusercontent.com/38511308/105726962-7f0cbc80-5f22-11eb-85b3-f7854e1c27b9.jpeg)
 
 
 This directory structure is provided for you on the git clone, or else you can make it quickly yourself:
 
-`mkdir SNP_calling && cd SNP_calling && mkdir scripts reads bams gvcfs vcfs && cd scripts && mkdir logs && cd .. && cd reads && mkdir raw_reads clean_reads && cd raw_reads && mkdir fastqc && cd ../clean_reads && mkdir fastqc && cd ../../ && cd bams && mkdir raw_bams interim_bams clean_bams && cd ../`
+`mkdir SNP_calling && cd SNP_calling && mkdir scripts reads bams gvcfs vcfs && cd scripts && mkdir logs && cd .. && cd reads && mkdir raw_reads clean_reads && cd raw_reads && mkdir fastqc && cd ../clean_reads && mkdir fastqc && cd ../../ && cd bams && mkdir raw_bams interim_bams clean_bams && cd ../vcfs/ && mkdir interim_vcfs && mkdir intervals && cd ..`
 
 #### Here's a list of the scripts and a brief description of what they do:
 
@@ -69,18 +69,19 @@ Uses GATK4 SelectVariants, vcftools for various filters (user can choose!) and f
 The reliability of these scripts relies heavily on a metadata file, which you will have to create prior to running the pipeline.
 The metadata file can have any information you require in it, e.g. sampling location, sex, sample ID etc etc. In fact, it's good habit to have a metadata file such as this associated with any sequencing project. Below I provide an example of a metadata file structure. It's a tsv file, with columns and rows. Can easily be made in Excel and saved as a .tsv ;)
 
-```
-simple_ID 	sample_ID 	instrument 	flow_cell	lane 	barcode	sex	run_num seq_num
-APLP_F1		APLP_F1_A_L001	  ILLUMINA 	A		1	ATGCA	F	44  1
-APLP_F1		APLP_F1_A_L002	  ILLUMINA 	A		2	ATGCA	F	44  1
-APLP_F1		APLP_F1_A_L003	  ILLUMINA 	A		3	ATGCA	F	41  1
-APLP_F2		APLP_F2_A_L001	  ILLUMINA 	A		1	GTCTA	F	44  1
-APLP_F2		APLP_F2_A_L002	  ILLUMINA 	A		2	GTCTA	F	44  1
-APLP_F2		APLP_F2_A_L003	  ILLUMINA 	A		3	CTAGA	F	41  1
-APLP_M1		APLP_M1_A_L001	  ILLUMINA 	A		1	CAAGC	M	44  1
-APLP_M1		APLP_M1_B_L001	  ILLUMINA 	B		1	CAAGC	M	44  1
-APLP_M1		APLP_M1_C_L001	  ILLUMINA 	C		1	CAAGC	M	41  1
-```
+
+| simple_ID | sample_ID | read1 | read2 | instrument | flowcell | lane | barcode | sex | run_num | seq_num |
+| ---------- | ----------  | ----------  | ---------- | ---------- | ---------- | ----------  | ---------- | ---------- | ---------- | ---------- |
+| APLP_F1 | APLP_F1_A_L001 | APLP_F1_A_L001_r1.fq.gz | APLP_F1_A_L001_r2.fq.gz | ILLUMINA | A | 1 | ATGCA | F | 44 | 1 |
+| APLP_F1 | APLP_F1_A_L002 | APLP_F1_A_L002_r1.fq.gz | APLP_F1_A_L002_r2.fq.gz | ILLUMINA | A | 2 | ATGCA | F | 44 | 1 |
+| APLP_F1 | APLP_F1_A_L003 | APLP_F1_A_L003_r1.fq.gz | APLP_F1_A_L003_r2.fq.gz | ILLUMINA | A | 3 | ATGCA | F | 41 | 1 |
+| APLP_F2 | APLP_F2_A_L001 | APLP_F2_A_L001_r1.fq.gz | APLP_F2_A_L001_r2.fq.gz | ILLUMINA | A | 1 | GTCTA | F | 44 | 1 |
+| APLP_F2 | APLP_F2_A_L002 | APLP_F2_A_L002_r1.fq.gz | APLP_F2_A_L002_r2.fq.gz | ILLUMINA | A | 2 | GTCTA | F | 44 | 1 |
+| APLP_F2 | APLP_F2_A_L003 | APLP_F2_A_L003_r1.fq.gz | APLP_F2_A_L003_r2.fq.gz | ILLUMINA | A | 3 | CTAGA | F | 41 | 1 |
+| APLP_M1 | APLP_M1_A_L001 | APLP_M1_A_L001_r1.fq.gz | APLP_M1_A_L001_r2.fq.gz | ILLUMINA | A | 1 | CAAGC | M | 44 | 1 |
+| APLP_M1 | APLP_M1_B_L001 | APLP_M1_B_L001_r1.fq.gz | APLP_M1_B_L001_r2.fq.gz | ILLUMINA | B | 1 | CAAGC | M | 44 | 1 |
+| APLP_M1 | APLP_M1_C_L001 | APLP_M1_C_L001_r1.fq.gz | APLP_M1_C_L001_r2.fq.gz | ILLUMINA | C | 1 | CAAGC | M | 44 | 1 |
+
 
 #### Info on this metadata
 simple_ID = name of individual
@@ -110,20 +111,18 @@ Much of these metdata can be collected from your fastq read headers:
 #### Depending on how you edit and put together your metadata, you will have to check each script to make sure it pulls out the correct column of data.
 For example, 
 
-In `1_qc_clean.sh`, we take the second column which is the name of the fastq reads
+In `1_qc_clean.sh`, we take the third and fourth columns which is the name of the fastq reads
 
 ```
-read1=( `cat $metadata | cut -f 2` )
-read1_array=$raw_reads/${read1[(($MOAB_JOBARRAYINDEX))]}
+read1_array=( `cat $metadata | cut -f 2` )
+read1=$raw_reads/${read1_array[(($SLURM_ARRAY_TASK_ID))]}
 
-read2=( `cat $metadata | cut -f 2` )
-read2_array=$raw_reads/${read2[(($MOAB_JOBARRAYINDEX))]}
+read2_array=( `cat $metadata | cut -f 2` )
+read2=$raw_reads/${read2_array[(($SLURM_ARRAY_TASK_ID))]}
 ```
 
-and we append \_R1.fastq and \_R2.fastq to the end of the file name in the script:
-
 ```
-trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1_array}_R1.fastq.gz ${read2_array}_R2.fastq.gz
+trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --phred33 --paired ${read1} ${read2}
 ```
 
 In `3_add_readgroups.sh` we also use a lot of this information too ...
