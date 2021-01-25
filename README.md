@@ -76,7 +76,11 @@ The metadata file can have any information you require in it, e.g. sampling loca
 | APLP_F1 | APLP_F1_A_L002 | APLP_F1_A_L002_r1.fq.gz | APLP_F1_A_L002_r2.fq.gz | ILLUMINA | A | 2 | ATGCA | F | 44 | 1 |
 | APLP_F1 | APLP_F1_A_L003 | APLP_F1_A_L003_r1.fq.gz | APLP_F1_A_L003_r2.fq.gz | ILLUMINA | A | 3 | ATGCA | F | 41 | 1 |
 | APLP_F2 | APLP_F2_A_L001 | APLP_F2_A_L001_r1.fq.gz | APLP_F2_A_L001_r2.fq.gz | ILLUMINA | A | 1 | GTCTA | F | 44 | 1 |
-| APLP_F2 | APLP_F2_A_L002 | APLP_F2_A_L002_r1.fq.gz | APLP_F2_A_L002_r2.fq.gz
+| APLP_F2 | APLP_F2_A_L002 | APLP_F2_A_L002_r1.fq.gz | APLP_F2_A_L002_r2.fq.gz | ILLUMINA | A | 2 | GTCTA | F | 44 | 1 |
+| APLP_F2 | APLP_F2_A_L003 | APLP_F2_A_L003_r1.fq.gz | APLP_F2_A_L003_r2.fq.gz | ILLUMINA | A | 3 | CTAGA | F | 41 | 1 |
+| APLP_M1 | APLP_M1_A_L001 | APLP_M1_A_L001_r1.fq.gz | APLP_M1_A_L001_r2.fq.gz | ILLUMINA | A | 1 | CAAGC | M | 44 | 1 |
+| APLP_M1 | APLP_M1_B_L001 | APLP_M1_B_L001_r1.fq.gz | APLP_M1_B_L001_r2.fq.gz | ILLUMINA | B | 1 | CAAGC | M | 44 | 1 |
+| APLP_M1 | APLP_M1_C_L001 | APLP_M1_C_L001_r1.fq.gz | APLP_M1_C_L001_r2.fq.gz | ILLUMINA | C | 1 | CAAGC | M | 44 | 1 |
 
 
 
