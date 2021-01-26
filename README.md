@@ -2,6 +2,7 @@
 Full GATK SNP calling pipeline
 
 This set of scripts take raw illumina whole-genome sequencing reads as input to produce a filtered VCF file
+
 Disclaimer: These scripts work for us on our system, but there may be unforseen idiosyncractic errors!
 
 These scripts were written for a PBS batch cluster system
