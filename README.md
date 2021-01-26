@@ -62,8 +62,13 @@ Runs GATK4 GenomicsDBImport and GenotypeGVCFs
 ## 10_refine_filter.sh
 Uses GATK4 SelectVariants, vcftools for various filters (user can choose!) and finally GATK3 CombineVariants to merge samples generated from multiple populations
 
-### To run the scripts:
+### Important info before running the scripts:
 - Check which batch submission system your cluster is running, i.e. SGE, PBS, SLURM
+- for each script, I've set the array number arbitarily up to 10:
+e.g. `#SBATCH --array=1-10`
+- you need to change the array depending on how many samples you are mapping at each stage. I.e. --array=1-10 runs array 1-10 (i.e. 9 samples excluding the header as arrays start from 0)
+- Any information which requires editing by you is included in chevrons, i.e. `#SBATCH -A <research_project-T111858>`and `MASTER=<path>` - remove the chevrons and add your information here
+- any other specific comments for each script are included in the script themselves within the comments
 
 ### Important Metadata 
 The reliability of these scripts relies heavily on a metadata file, which you will have to create prior to running the pipeline.
