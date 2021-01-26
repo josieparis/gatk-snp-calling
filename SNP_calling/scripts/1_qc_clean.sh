@@ -48,9 +48,9 @@ echo "output directory" $clean_reads
 fastqc ${read1} ${read2} -o $fastqc_raw
 
 ## Run trim_galore default settings (but adjust adaptors if needed)      
-trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --paired ${read1_array}_R1_001.fastq.gz ${read2_array}_R2_001.fastq.gz
+trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --paired ${read1} ${read2}
 
 ## Run fastqc on clean reads
-fastqc ${read1}_r1_val_1.fq.gz ${read2_array}_r2_val_2.fq.gz -o $fastqc_raw
+fastqc ${out}_r1_val_1.fq.gz ${out}_r2_val_2.fq.gz -o $fastqc_raw
 
 
