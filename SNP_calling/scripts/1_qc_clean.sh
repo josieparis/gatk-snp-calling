@@ -53,6 +53,6 @@ trim_galore -q 20 --path_to_cutadapt cutadapt -o $clean_reads --paired ${read1} 
 ## you will probably need to change the suffix of these arrays here, depending on your read suffix.
 ## Alternatively, run fastqc and trimgalore, add the clean reads to your metadata and then create another array with the clean reads to be used here
 ## Run fastqc on clean reads
-fastqc ${out}_r1_val_1.fq.gz ${out}_r2_val_2.fq.gz -o $fastqc_raw
+fastqc ${out}_val_1.fq.gz ${out}_val_2.fq.gz -o $fastqc_raw
 
 
