@@ -28,30 +28,32 @@ bam_out=$MASTER/SNP_calling/bams/interim_bams
 # Metadata file for each population
 # 1 simple_ID
 # 2 sample_ID
-# 3 instrument
-# 4 flow_cell
-# 5 lane
-# 6 barcode
-# 7 sex
-# 8 run_num
-# 9 seq_num
+# 3 read1
+# 4 read2
+# 5 instrument
+# 6 flowcell
+# 7 lane
+# 8 barcode
+# 9 sex
+# 10 run_num
+# 11 seq_num
 
 simpleID_array=( `cat $metadata | cut -f 1` )
 simpleID=${simpleID_array[(($SLURM_ARRAY_TASK_ID))]}
 
-instrument_array=( `cat $metadata | cut -f 3` )
+instrument_array=( `cat $metadata | cut -f 5` )
 instrument=${instrument_array[(($SLURM_ARRAY_TASK_ID))]}
 
-seqnum_array=( `cat $metadata | cut -f 9` )
+seqnum_array=( `cat $metadata | cut -f 11` )
 seqnum=${seqnum_array[(($SLURM_ARRAY_TASK_ID))]}
 
-flowcell_array=( `cat $metadata | cut -f 4` )
+flowcell_array=( `cat $metadata | cut -f 6` )
 flowcell=${flow_cell_array[(($SLURM_ARRAY_TASK_ID))]}
 
-lane_array=( `cat $metadata | cut -f 5` )
+lane_array=( `cat $metadata | cut -f 7` )
 lane=${lane_array[(($SLURM_ARRAY_TASK_ID))]}
 
-barcode_array=( `cat $metadata | cut -f 6` )
+barcode_array=( `cat $metadata | cut -f 8` )
 barcode=${barcode_array[(($SLURM_ARRAY_TASK_ID))]}
 
 ## In array
@@ -62,12 +64,7 @@ insampleID=$bam_in/${insampleID_array[(($SLURM_ARRAY_TASK_ID))]}
 outsampleID_array=( `cat $metadata | cut -f 2` )
 outsampleID=$bam_out/${outsampleID_array[(($SLURM_ARRAY_TASK_ID))]}
 
-## This just catches the array in case it's running for a value with no individual (this screws with the outputs)
-IND_N=$(cut -f1 $metadata | tail -n+2 | uniq | awk 'NF > 0' | wc -l)
-
-if [ $SLURM_ARRAY_TASK_ID -le $IND_N ]
-then
-
+## NB  $EBROOTPICARD is the path to your install of picard
 ## Run picard tools AddreplaceRGs
 java -Xmx10g -jar $EBROOTPICARD/picard.jar AddOrReplaceReadGroups \
 I=${insampleID}.sorted.raw.bam \
@@ -81,5 +78,3 @@ RGPL=${instrument} \
 ## Index the readgroup bam files
 java -Xmx10g  -jar $EBROOTPICARD/picard.jar BuildBamIndex \
 I=${outsampleID}.sorted.rg.bam VALIDATION_STRINGENCY=LENIENT
-
-fi
