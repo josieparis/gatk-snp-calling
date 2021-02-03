@@ -4,7 +4,7 @@
 #SBATCH --time=168:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
-#SBATCH -A Research_Project-T110748
+#SBATCH -A <research_project>
 #SBATCH --job-name=haplotype_caller
 #SBATCH --error=haplotype_caller.err.txt 
 #SBATCH --output=haplotype_caller.out.txt 
@@ -17,13 +17,16 @@
 module load GATK/4.0.5.1-foss-2018a-Python-3.6.4 SAMtools/1.9-foss-2018b
 
 ## Set your master path
-MASTER=/gpfs/ts0/home/jrp228/NERC/people/josie/github_test/gatk-snp-calling
+MASTER=<path>
+
+## Fill in path for population specific metadata
+metadata=$MASTER/SNP_calling/metadata.tsv
 
 ## Fill in directories if different from the workspace setup
 ## Also add path to reference
 bam_in=$MASTER/SNP_calling/bams/clean_bams
 gvcfs=$MASTER/SNP_calling/bams/gvcfs
-reference=/gpfs/ts0/home/jrp228/startup/STAR/STAR.chromosomes.release.fasta
+reference=$MASTER/reference.fa.gz
 
 ## In array ##
 insampleID_array=( `cat $samples | cut -f 1` )
