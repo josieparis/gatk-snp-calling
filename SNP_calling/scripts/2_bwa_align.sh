@@ -4,7 +4,7 @@
 #SBATCH --time=1:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4  
-#SBATCH -A Research_Project-T109389
+#SBATCH -A <research project>
 #SBATCH --job-name=bwa_align 
 #SBATCH --error=logs/bwa_align.err.txt  
 #SBATCH --output=logs/bwa_align.out.txt  
@@ -14,12 +14,13 @@
 
 ### Script to run a bwa mem, bam and sort bam 
 
+# Load modules
 # Required modules are: bwa, samtools
 module load BWA/0.7.17-foss-2018a
 module load SAMtools/1.3.1-foss-2016a 
 
 ## Set your master path
-MASTER=/gpfs/ts0/home/jrp228/NERC/people/josie/github_test/gatk-snp-calling
+MASTER=<path>
 
 ## Fill in directories if different from the workspace setup
 ## Also add path to indexed reference
