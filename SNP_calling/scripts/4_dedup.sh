@@ -4,7 +4,7 @@
 #SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
-#SBATCH -A Research_Project-T110748
+#SBATCH -A <research_project>
 #SBATCH --job-name=index_dedup_master 
 #SBATCH --error=index_dedup_master.err.txt 
 #SBATCH --output=index_dedup_master.out.txt 
@@ -15,14 +15,18 @@
 
 ## Load your system modules
 # Required modules are: picard tools
+module purge
 module load picard/2.6.0-Java-1.8.0_131
 
 ## Set your master path
-MASTER=/gpfs/ts0/home/jrp228/NERC/people/josie/github_test/gatk-snp-calling
+MASTER=<path>
 
 ## Fill in directories if different from the workspace setup
 bam_in=$MASTER/SNP_calling/bams/interim_bams
 bam_out=$MASTER/SNP_calling/bams/interim_bams
+
+## Picard path:
+EBROOTPICARD=<path_to_picard>
 
 ## Fill in path for population specific metadata
 metadata=$MASTER/SNP_calling/metadata.tsv
@@ -35,11 +39,6 @@ insampleID=$bam_in/${insampleID_array[(($SLURM_ARRAY_TASK_ID))]}
 outsampleID_array=( `cat $metadata | cut -f 2` )
 outsampleID=$bam_out/${outsampleID_array[(($SLURM_ARRAY_TASK_ID))]}
 
-## This just catches the array in case it's running for a value with no individual (this screws with the outputs)
-IND_N=$(cut -f1 $metadata | tail -n+2 | uniq | awk 'NF > 0' | wc -l)
-
-if [ $SLURM_ARRAY_TASK_ID -le $IND_N ]
-then
 
 ## Run picardtools MarkDuplicates
 java -Xmx10g -jar $EBROOTPICARD/picard.jar MarkDuplicates \
@@ -55,4 +54,3 @@ TMP_DIR=/gpfs/ts0/scratch/jrp228/tmp
 java -Xmx10g -jar $EBROOTPICARD/picard.jar BuildBamIndex \
 I=$outsampleID.sorted.dups.bam VALIDATION_STRINGENCY=LENIENT
 
-fi
