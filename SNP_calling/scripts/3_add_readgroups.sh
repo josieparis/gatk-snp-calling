@@ -73,7 +73,7 @@ RGSM=${simpleID} \
 RGLB=${simpleID}.${seqnum} \
 RGID=${flowcell}.${lane} \
 RGPU=${flowcell}${lane}.${barcode} \
-RGPL=${instrument} \
+RGPL=${instrument}
 
 ## Index the readgroup bam files
 java -Xmx10g  -jar $EBROOTPICARD/picard.jar BuildBamIndex \
