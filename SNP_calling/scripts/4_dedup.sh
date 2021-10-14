@@ -47,8 +47,7 @@ O=$outsampleID.sorted.dups.bam \
 METRICS_FILE=$outsampleID.metrics.txt \
 REMOVE_DUPLICATES=true \
 VALIDATION_STRINGENCY=LENIENT AS=true \
-TMP_DIR=/gpfs/ts0/scratch/jrp228/tmp
-## optional = TMP_DIR=<scratch_space>
+## optional TMP_DIR=<scratch_space>
 
 ## Index the deduped bam files
 java -Xmx10g -jar $EBROOTPICARD/picard.jar BuildBamIndex \
