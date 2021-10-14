@@ -12,12 +12,12 @@
 #SBATCH --array=1-10
 ###SBATCH --array=1-20%5
 
-### Script to run a bwa mem, bam and sort bam 
+### Script to run a bwa mem, bam and sort bams
 
 # Load modules
 # Required modules are: bwa, samtools
 module load BWA/0.7.17-foss-2018a
-module load SAMtools/1.3.1-foss-2016a 
+module load SAMtools/1.3.1-foss-2018a
 
 ## Set your master path
 MASTER=<path>
