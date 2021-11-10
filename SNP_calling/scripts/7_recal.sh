@@ -4,7 +4,7 @@
 #SBATCH --time=02:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=2
-#SBATCH -A Research_Project-T110748
+#SBATCH -A <research_project>
 #SBATCH --job-name=master_base_recal 
 #SBATCH --error=master_base_recal.err.txt 
 #SBATCH --output=master_base_recal.out.txt 
@@ -17,12 +17,12 @@
 module load GATK/4.0.5.1-foss-2018a-Python-3.6.4
 
 ## Set your master path
-MASTER=/gpfs/ts0/home/jrp228/NERC/people/josie/github_test/gatk-snp-calling
+MASTER=<dir>
 
 ## Fill in directories if different from the workspace setup
 ## Also add path to indexed reference and recalibration file
-reference=/gpfs/ts0/home/jrp228/startup/STAR/STAR.chromosomes.release.fasta
-recal=/gpfs/ts0/home/jrp228/startup/STAR/STAR_intersect_recal.vcf
+reference=<reference>
+recal=<intersect_vcf>
 bam_in=$MASTER/SNP_calling/bams/interim_bams
 bam_out=$MASTER/SNP_calling/bams/clean_bams
 
@@ -50,7 +50,7 @@ gatk --java-options "-Xmx8g" BaseRecalibrator \
 
 ## ApplyBQSR
 gatk --java-options "-Xmx8g" ApplyBQSR \
-$insampleID.merged.sorted.dups.bam \
+-I $insampleID.merged.sorted.dups.bam \
 -R $reference --bqsr-recal-file $outsampleID.table \
 -O $outsampleID.recal.bam
 
