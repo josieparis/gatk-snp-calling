@@ -18,7 +18,7 @@
 module load picard/2.6.0-Java-1.8.0_131
 
 ## Set your master path
-MASTER=/gpfs/ts0/home/jrp228/NERC/people/josie/github_test/gatk-snp-calling
+MASTER=<master_dir>
 
 ## Fill in path for population specific metadata ##
 metadata=$MASTER/SNP_calling/metadata.tsv
@@ -48,7 +48,7 @@ seqnum_array=( `cat $metadata | cut -f 11` )
 seqnum=${seqnum_array[(($SLURM_ARRAY_TASK_ID))]}
 
 flowcell_array=( `cat $metadata | cut -f 6` )
-flowcell=${flow_cell_array[(($SLURM_ARRAY_TASK_ID))]}
+flowcell=${flowcell_array[(($SLURM_ARRAY_TASK_ID))]}
 
 lane_array=( `cat $metadata | cut -f 7` )
 lane=${lane_array[(($SLURM_ARRAY_TASK_ID))]}
