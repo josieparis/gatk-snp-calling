@@ -5,11 +5,7 @@ This set of scripts take raw illumina whole-genome sequencing reads as input to 
 
 Disclaimer: These scripts work for us on our system, but there may be unforseen idiosyncractic errors!
 
-These scripts were written for a PBS batch cluster system
-
-We provide a short bash script to convert PBS headers to SLURM (`liftover_PBS2SLURM.sh`) (but please check these before starting)
-
-Conversion to SGE should be relatively straightforward (we will add another liftover script for this in the future ...)
+These scripts were written for a Slurm batch cluster system
 
 #### These scripts have been used to create VCF files in the following publications:
 
